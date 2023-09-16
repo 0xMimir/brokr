@@ -1,0 +1,50 @@
+name: Rust
+
+on:
+  push:
+    branches: ["master"]
+    
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Clippy
+        run: cargo clippy -- -D warnings
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run tests
+        run: cargo tarpaulin --out xml --skip-clean
+
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          verbose: true

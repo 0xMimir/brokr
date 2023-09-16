@@ -11,6 +11,12 @@ pub struct Brokr {
     pub(crate) reqwest: Client,
 }
 
+impl Default for Brokr{
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Brokr {
     pub fn new() -> Self {
         let mut link_finder = LinkFinder::default();
@@ -23,11 +29,11 @@ impl Brokr {
             link_finder,
         }
     }
-    
+
     pub fn find_broken_lines(
         &self,
         path: &String,
-        extensions: &Vec<&str>,
+        extensions: &[&str],
     ) -> Result<Vec<InvalidLink>> {
         let files = recurse_files(path, extensions)?;
         let mut _invalid_links = Vec::new();
@@ -77,10 +83,7 @@ impl Brokr {
             Err(_) => return true,
         };
 
-        match response.error_for_status() {
-            Ok(_) => false,
-            Err(_) => true,
-        }
+        response.error_for_status().is_err()
     }
 }
 

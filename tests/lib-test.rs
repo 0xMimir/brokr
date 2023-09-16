@@ -4,7 +4,7 @@ use brokr::Brokr;
 fn test_domain() {
     let path = ".".to_owned();
     let extensions = vec!["md", "html", "txt"];
-    let brokr = Brokr::new();
+    let brokr = Brokr::default();
     let broken_links = brokr.find_broken_lines(&path, &extensions).unwrap();
     let links = broken_links
         .iter()
