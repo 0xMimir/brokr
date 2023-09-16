@@ -23,8 +23,12 @@ impl Brokr {
             link_finder,
         }
     }
-
-    pub fn run(&self, path: &String, extensions: &Vec<&String>) -> Result<()> {
+    
+    pub fn find_broken_lines(
+        &self,
+        path: &String,
+        extensions: &Vec<&str>,
+    ) -> Result<Vec<InvalidLink>> {
         let files = recurse_files(path, extensions)?;
         let mut _invalid_links = Vec::new();
         for path in files {
@@ -32,15 +36,7 @@ impl Brokr {
                 _invalid_links.append(&mut invalid_links);
             };
         }
-
-        if !_invalid_links.is_empty() {
-            println!("\nFound {} invalid links\n", _invalid_links.len());
-            for invalid_link in _invalid_links.iter() {
-                println!("{}", invalid_link);
-            }
-        }
-
-        Ok(())
+        Ok(_invalid_links)
     }
 
     pub(crate) fn check_file(&self, path: PathBuf) -> Result<Vec<InvalidLink>> {
