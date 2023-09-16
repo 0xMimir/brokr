@@ -6,8 +6,6 @@ use url::Url;
 
 use crate::files::{read_file, recurse_files};
 
-const DEFAULT_EXTENSIONS: [&str; 3] = ["html", "md", "txt"];
-
 pub struct Brokr {
     pub(crate) link_finder: LinkFinder,
     pub(crate) reqwest: Client,
@@ -26,8 +24,8 @@ impl Brokr {
         }
     }
 
-    pub fn run(&self) -> Result<()> {
-        let files = recurse_files(".", &DEFAULT_EXTENSIONS)?;
+    pub fn run(&self, path: &String, extensions: &Vec<&String>) -> Result<()> {
+        let files = recurse_files(path, extensions)?;
         let mut _invalid_links = Vec::new();
         for path in files {
             if let Ok(mut invalid_links) = self.check_file(path) {
