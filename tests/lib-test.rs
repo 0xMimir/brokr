@@ -13,10 +13,6 @@ fn test_domain() {
 
     assert_eq!(
         links,
-        [
-            "https://somewhere.nowhere/there",
-            "https://link.random/there",
-            "https://random.link.here/da"
-        ]
+        ["https://somewhere.nowhere/there", "https://random.link.here/da", "https://link.random/there"]
     )
 }

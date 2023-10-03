@@ -46,10 +46,6 @@ fn test_recurse_files() {
 
     assert_eq!(
         files,
-        [
-            "tests/example/index.html",
-            "tests/example/random.txt",
-            "tests/example/README.md",
-        ]
+        ["tests/example/index.html", "tests/example/README.md", "tests/example/random.txt"]
     );
 }
