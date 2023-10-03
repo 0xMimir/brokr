@@ -40,12 +40,18 @@ pub(crate) fn read_file(path: &PathBuf) -> std::io::Result<String> {
 fn test_recurse_files() {
     let files = recurse_files("tests", &["md", "html", "txt"]).unwrap();
     let files = files
-        .into_iter()
-        .map(|file| file.to_str().unwrap().to_owned())
-        .collect::<Vec<_>>();
+        .iter()
+        .map(|file| file.to_str().unwrap())
+        .collect::<std::collections::HashSet<_>>();
 
     assert_eq!(
         files,
-        ["tests/example/index.html", "tests/example/README.md", "tests/example/random.txt"]
+        [
+            "tests/example/README.md",
+            "tests/example/random.txt",
+            "tests/example/index.html",
+        ]
+        .into_iter()
+        .collect()
     );
 }

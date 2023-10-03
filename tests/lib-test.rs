@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use brokr::Brokr;
 
 #[test]
@@ -9,7 +11,7 @@ fn test_domain() {
     let links = broken_links
         .iter()
         .map(|bl| bl.url.as_str())
-        .collect::<Vec<_>>();
+        .collect::<HashSet<_>>();
 
     assert_eq!(
         links,
@@ -18,5 +20,7 @@ fn test_domain() {
             "https://random.link.here/da",
             "https://somewhere.nowhere/there"
         ]
+        .into_iter()
+        .collect()
     )
 }
