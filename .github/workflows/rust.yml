@@ -38,14 +38,14 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - name: Install tarpaulin
-        run: cargo install cargo-tarpaulin
+      - name: Install llvm cov
+        run: cargo install cargo-llvm-cov
 
       - name: Run tests
-        run: cargo test
+        run: cargo llvm-cov --codecov --output-path codecov.json
 
-      # - name: Upload to codecov.io
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     token: ${{secrets.CODECOV_TOKEN}}
-      #     verbose: true
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          verbose: true
