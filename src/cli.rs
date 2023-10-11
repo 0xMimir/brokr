@@ -16,3 +16,25 @@ pub fn build_cli() -> Command {
 
     Command::new("brokr").arg(src_dir).arg(file_extensions)
 }
+
+#[test]
+fn test_set_default_values() {
+    let command = build_cli().get_matches();
+
+    let source_dir = command
+        .get_one::<String>("SOURCE_DIR")
+        .expect("Default value not set")
+        .as_str();
+
+    assert_eq!(source_dir, ".");
+
+    let file_extensions = command
+        .get_many::<String>("EXTENSIONS")
+        .expect("Default value not set")
+        .map(|e| e.as_str())
+        .collect::<Vec<_>>();
+
+    for extension in DEFAULT_EXTENSIONS {
+        assert!(file_extensions.contains(&extension));
+    }
+}
