@@ -14,7 +14,14 @@ pub fn build_cli() -> Command {
         .value_delimiter(',')
         .help("File extensions to search for");
 
-    Command::new("brokr").arg(src_dir).arg(file_extensions)
+    let threads = Arg::new("THREADS")
+        .long("threads")
+        .help("Number of threads to spawn to check broken urls");
+
+    Command::new("brokr")
+        .arg(src_dir)
+        .arg(file_extensions)
+        .arg(threads)
 }
 
 #[test]

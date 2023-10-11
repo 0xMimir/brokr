@@ -92,7 +92,6 @@ impl Brokr {
 
         while running_threads.load(Ordering::Relaxed) > 0 {
             sleep(Duration::from_millis(1));
-            dbg!(&running_threads);
         }
 
         let links = match broken_links.lock() {
