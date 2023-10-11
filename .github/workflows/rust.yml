@@ -42,7 +42,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: Run tests
-        run: cargo tarpaulin --out xml --skip-clean
+        run: cargo tarpaulin --out xml --implicit-test-threads
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v3
