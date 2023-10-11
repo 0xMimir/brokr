@@ -14,7 +14,7 @@ fn main() -> anyhow::Result<()> {
         .map(|e| e.as_str())
         .collect::<Vec<_>>();
 
-    let max_threads = cli.get_one::<u8>("THREADS").map(|threads| *threads);
+    let max_threads = cli.get_one::<u8>("THREADS").copied();
 
     let brokr = Brokr::new();
     let links = brokr.find_links(source_dir, &file_extensions)?;
