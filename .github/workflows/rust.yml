@@ -37,15 +37,15 @@ jobs:
           components: rustfmt, clippy
 
       - uses: Swatinem/rust-cache@v2
-      
+
       - name: Install tarpaulin
         run: cargo install cargo-tarpaulin
 
       - name: Run tests
-        run: cargo tarpaulin --out xml --implicit-test-threads
+        run: cargo test
 
-      - name: Upload to codecov.io
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          verbose: true
+      # - name: Upload to codecov.io
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{secrets.CODECOV_TOKEN}}
+      #     verbose: true
