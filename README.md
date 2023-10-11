@@ -1,6 +1,8 @@
 # Brokr
 
-Brokr is a tool, to find broken links in your project, 
+[![codecov](https://codecov.io/gh/0xMimir/brokr/graph/badge.svg?token=C8ZCdeXvaj)](https://codecov.io/gh/0xMimir/brokr)
+
+Brokr is a tool/lib, to find broken links in your project, 
 
 ### Install
 

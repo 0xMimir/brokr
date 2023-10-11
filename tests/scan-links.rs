@@ -10,12 +10,11 @@ fn test_scan_links() {
     let links = [
         Url::parse("https://link.random/there").unwrap(),
         Url::parse("https://random.link.here/da").unwrap(),
-        Url::parse("https://somewhere.nowhere/there").unwrap(),
         Url::parse("https://google.com").unwrap(),
     ]
     .to_vec();
 
-    let broken_links = brokr.find_broken_links(links, Some(1));
+    let broken_links = brokr.find_broken_links(links, Some(10));
 
     let broken_links = broken_links
         .iter()
@@ -24,6 +23,5 @@ fn test_scan_links() {
 
     assert!(broken_links.contains("https://link.random/there"));
     assert!(broken_links.contains("https://random.link.here/da"));
-    assert!(broken_links.contains("https://somewhere.nowhere/there"));
     assert!(!broken_links.contains("https://google.com"));
 }

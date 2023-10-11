@@ -36,10 +36,10 @@ jobs:
           override: true
           components: rustfmt, clippy
 
+      - uses: Swatinem/rust-cache@v2
+      
       - name: Install tarpaulin
         run: cargo install cargo-tarpaulin
-
-      - uses: Swatinem/rust-cache@v2
 
       - name: Run tests
         run: cargo tarpaulin --out xml --implicit-test-threads
