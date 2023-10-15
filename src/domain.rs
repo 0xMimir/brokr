@@ -84,7 +84,12 @@ impl Brokr {
         Ok(urls)
     }
 
-    pub fn find_broken_links(&self, links: Vec<Url>, max_threads: Option<u8>) -> Vec<Url> {
+    pub fn find_broken_links(
+        &self,
+        links: Vec<Url>,
+        max_threads: Option<u8>,
+        allowed_statuses: Vec<u16>,
+    ) -> Vec<Url> {
         let max_threads = max_threads.unwrap_or(8);
 
         let links = Arc::new(Mutex::new(links));
@@ -95,13 +100,19 @@ impl Brokr {
             let running_threads = running_threads.clone();
             let broken_links = broken_links.clone();
             let links = links.clone();
+            let allowed_statuses = allowed_statuses.clone();
             thread::spawn(move || {
                 running_threads.fetch_add(1, Ordering::Relaxed);
                 let client = Self::create_client();
 
                 while let Some(link) = Self::take_last(&links) {
                     let is_broken = match client.get(link.as_str()).send() {
-                        Ok(response) => response.error_for_status().is_err(),
+                        Ok(response) => {
+                            let status = response.status().as_u16();
+
+                            !(response.error_for_status().is_ok()
+                                || allowed_statuses.contains(&status))
+                        }
                         Err(_) => true,
                     };
 

@@ -19,7 +19,7 @@ fn main() -> anyhow::Result<()> {
 
     println!("Found {} links", links.len());
 
-    let invalid_links = brokr.find_broken_links(links, config.threads);
+    let invalid_links = brokr.find_broken_links(links, config.threads, vec![]);
 
     if !invalid_links.is_empty() {
         println!("\nFound {} invalid links\n", invalid_links.len());

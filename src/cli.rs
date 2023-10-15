@@ -18,4 +18,8 @@ pub struct CargoBrokrCli {
     /// Test links for localhost
     #[arg(long, default_value_t = false)]
     pub test_localhost: bool,
+
+    /// In addition to regular success status codes, accept some failed status codes
+    #[arg(long)]
+    pub allow_statuses: Vec<u16>,
 }

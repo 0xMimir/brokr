@@ -14,7 +14,7 @@ fn test_scan_links() {
     ]
     .to_vec();
 
-    let broken_links = brokr.find_broken_links(links, Some(10));
+    let broken_links = brokr.find_broken_links(links, Some(10), vec![]);
 
     let broken_links = broken_links
         .iter()
