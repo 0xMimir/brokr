@@ -16,6 +16,7 @@ pub fn build_cli() -> Command {
 
     let threads = Arg::new("THREADS")
         .long("threads")
+        .value_parser(clap::value_parser!(u8))
         .help("Number of threads to spawn to check broken urls");
 
     Command::new("brokr")
