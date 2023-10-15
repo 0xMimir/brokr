@@ -1,48 +1,21 @@
-use clap::{Arg, Command};
+use clap::Parser;
 
-const DEFAULT_EXTENSIONS: [&str; 3] = ["html", "md", "txt"];
+#[derive(Parser)]
+#[command(bin_name = "brokr")]
+pub struct CargoBrokrCli {
+    /// Specifies the folder in which to find broken urls
+    #[arg(long, default_value = ".")]
+    pub source_dir: String,
 
-pub fn build_cli() -> Command {
-    let src_dir = Arg::new("SOURCE_DIR")
-        .long("source-dir")
-        .default_value(".")
-        .help("Specifies the folder in which to find broken urls");
+    /// File extensions to search for
+    #[arg(long, default_values_t = vec!["html".to_owned(), "md".to_owned(), "txt".to_owned()])]
+    pub extensions: Vec<String>,
 
-    let file_extensions = Arg::new("EXTENSIONS")
-        .long("extensions")
-        .default_values(DEFAULT_EXTENSIONS)
-        .value_delimiter(',')
-        .help("File extensions to search for");
+    /// Number of threads to spawn to check broken urls
+    #[arg(long)]
+    pub threads: Option<u8>,
 
-    let threads = Arg::new("THREADS")
-        .long("threads")
-        .value_parser(clap::value_parser!(u8))
-        .help("Number of threads to spawn to check broken urls");
-
-    Command::new("brokr")
-        .arg(src_dir)
-        .arg(file_extensions)
-        .arg(threads)
-}
-
-#[test]
-fn test_set_default_values() {
-    let command = build_cli().get_matches();
-
-    let source_dir = command
-        .get_one::<String>("SOURCE_DIR")
-        .expect("Default value not set")
-        .as_str();
-
-    assert_eq!(source_dir, ".");
-
-    let file_extensions = command
-        .get_many::<String>("EXTENSIONS")
-        .expect("Default value not set")
-        .map(|e| e.as_str())
-        .collect::<Vec<_>>();
-
-    for extension in DEFAULT_EXTENSIONS {
-        assert!(file_extensions.contains(&extension));
-    }
+    /// Test links for localhost
+    #[arg(long, default_value_t = false)]
+    pub test_localhost: bool,
 }

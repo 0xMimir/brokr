@@ -5,7 +5,7 @@ use std::{
 
 pub(crate) fn recurse_files(
     path: impl AsRef<Path>,
-    file_extensions: &[&str],
+    file_extensions: &[String],
 ) -> std::io::Result<Vec<PathBuf>> {
     let mut buf = vec![];
     let entries = read_dir(path)?;
@@ -22,7 +22,7 @@ pub(crate) fn recurse_files(
         if meta.is_file() {
             let entry = entry.path();
             if let Some(extension) = entry.extension() {
-                if file_extensions.iter().any(|ext| extension == *ext) {
+                if file_extensions.iter().any(|ext| extension == ext.as_str()) {
                     buf.push(entry);
                 }
             }
@@ -38,7 +38,11 @@ pub(crate) fn read_file(path: &PathBuf) -> std::io::Result<String> {
 
 #[test]
 fn test_recurse_files() {
-    let files = recurse_files("tests", &["md", "html", "txt"]).unwrap();
+    let files = recurse_files(
+        "tests",
+        &["md".to_owned(), "html".to_owned(), "txt".to_owned()],
+    )
+    .unwrap();
     let files = files
         .iter()
         .map(|file| file.to_str().unwrap())
