@@ -72,12 +72,18 @@ impl Brokr {
             .into_iter()
             .filter_map(|link| link.as_str().parse().ok())
             .filter(|url: &Url| {
+                // We only test http
+                if url.scheme() != "https" && url.scheme() != "http" {
+                    return false;
+                }
+
                 let host = url.host_str();
 
                 !filter_localhost
                     || !(host == Some("localhost")
                         || host == Some("127.0.0.1")
-                        || host == Some("0.0.0.0"))
+                        || host == Some("0.0.0.0")
+                        || host == Some("example.com"))
             })
             .collect();
 
