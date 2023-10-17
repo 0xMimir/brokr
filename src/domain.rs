@@ -18,6 +18,8 @@ use url::Url;
 
 use crate::files::{read_file, recurse_files};
 
+const DOMAINS: [&str; 4] = ["localhost", "127.0.0.1", "0.0.0.0", "example.com"];
+
 pub struct Brokr {
     pub(crate) link_finder: LinkFinder,
 }
@@ -77,13 +79,12 @@ impl Brokr {
                     return false;
                 }
 
-                let host = url.host_str();
+                let host = match url.host_str() {
+                    Some(host) => host,
+                    None => return false,
+                };
 
-                !filter_localhost
-                    || !(host == Some("localhost")
-                        || host == Some("127.0.0.1")
-                        || host == Some("0.0.0.0")
-                        || host == Some("example.com"))
+                filter_localhost || !DOMAINS.contains(&host)
             })
             .collect();
 
